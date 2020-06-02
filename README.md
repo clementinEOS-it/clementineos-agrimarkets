@@ -2,6 +2,6 @@
 
 ```
 $ git clone https://github.com/clementinEOS-it/clementineos-agrimarkets.git
-$ cd clementineos-coronavirus
+$ cd clementineos-agrimarkets
 $ npm install
 ```
