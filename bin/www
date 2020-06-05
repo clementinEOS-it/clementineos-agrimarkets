@@ -7,6 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('clementineos-scrape:server');
 var http = require('http');
+var moment = require('moment');
+var _ = require('lodash');
+const async = require('async');
+var priceCtrl = require('../controllers/prices');
 
 require('dotenv').config();
 
@@ -22,6 +26,47 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+const io = require("socket.io")(server);
+
+// Check if blockchain data is updated ...
+let isTimetoUpdate = () => {  
+  var format = 'hh:mm:ss'
+  var time = moment(process.env.START_TIME, format)
+  var now = moment();
+
+  return now.isAfter(time);  
+};
+
+io.origins((origin, callback) => {
+  console.log('Origin for Socket: ' + origin);
+  if (_.indexOf(whitelist.origins, origin) == -1) {
+    return callback('origin not allowed', false);
+  };
+  callback(null, true);
+});
+
+io.on('connection', socket => {
+  console.warn('... socket connected OK.');
+  runUpdate_Markets(socket);
+});
+
+let runUpdate_Markets = socket => {
+
+  if (isTimetoUpdate() || process.env.TEST) {
+
+    priceCtrl.getPrices(socket, (err, response) => {
+      
+      if (err) {
+          
+      } else {
+          
+      };
+
+    })
+
+  }
+
+}
 
 /**
  * Listen on provided port, on all network interfaces.
