@@ -53,7 +53,7 @@ app.use('/vue', express.static(__dirname + '/node_modules/vue/dist'));
 app.use('/socket', express.static(__dirname + '/node_modules/socket.io-client/dist'));
 
 app.use('/', indexRouter);
-app.use('/scrape/v1', scrapeRouter);
+app.use('/api/v1/markets', scrapeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

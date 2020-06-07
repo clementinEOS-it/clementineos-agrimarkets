@@ -9,10 +9,10 @@ require('dotenv').config();
 
 const whitelist = require('../whitelist');
 
-router.get('/markets', function(req, res, next) {
+router.get('/', function(req, res, next) {
 
     var options = {
-        table : 'market',
+        table : 'markets',
         limit: (req.query.limit || -1)
     };
 
@@ -24,7 +24,7 @@ router.get('/markets', function(req, res, next) {
             return item.date_at
         });
 
-        if (err) {
+        if (error) {
             res.status(500).send('');
         } else {
             res.status(200).json(r);
@@ -34,7 +34,7 @@ router.get('/markets', function(req, res, next) {
     
 });
 
-router.post('/markets', cors(whitelist.cors), function(req, res, next) {
+router.post('/', cors(whitelist.cors), function(req, res, next) {
 
     console.log('Sending to BLOCKCHAIN ...');
   

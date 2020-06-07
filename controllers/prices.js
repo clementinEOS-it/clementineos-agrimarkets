@@ -1,12 +1,13 @@
-const axios = require('axios');
-const markets = require('../markets');
-const async = require('async');
-const html2json = require('html2json').html2json;
-const _ = require('lodash');
-const $ = require('cheerio');
-const Entities = require('html-entities').AllHtmlEntities;
-const crypto = require('crypto');
-const moment = require('moment');
+const axios         = require('axios');
+const markets       = require('../markets');
+const async         = require('async');
+const html2json     = require('html2json').html2json;
+const _             = require('lodash');
+const $             = require('cheerio');
+const Entities      = require('html-entities').AllHtmlEntities;
+const crypto        = require('crypto');
+const moment        = require('moment');
+const eos           = require('eosblockchain');
 
 const entities = new Entities();
 
@@ -15,10 +16,10 @@ const eosNet = require('../eos')(process.env.ACCOUNT)
 
 var api_url;
 
-if (process.env.TEST == 1) {
-    api_url = 'http://localhost:3003/markets/';
+if (process.env.ENV == 1) {
+    api_url = 'http://localhost:3003/api/v1/markets/';
 } else {
-    api_url = 'http://agrimarkets.clementineos.it/markets/';
+    api_url = 'http://agrimarkets.clementineos.it/api/v1/markets/';
 };
 
 function decode(string) {
@@ -63,6 +64,7 @@ let getRowTable = (childs, m, cb) => {
             type: m.type,
             city: '',
             date_at: '',
+            source: m.url,
             product: '',
             price: '',
             price_num: 0,
@@ -209,6 +211,9 @@ let send = (socket, data, api_data, cb) => {
 
             run(contract, 'post', d, (err, response) => {
 
+                console.log('sending item to blockchain ... ');
+                console.table(d);
+
                 if (err) {
                     console.error('Error to send data blockchain ....');
                     _response.errors.push(JSON.stringify(d));
@@ -266,6 +271,8 @@ let update = (socket, cb) => {
     async.series({
         one: function(callback) {
 
+            console.log('get API data ...');
+
             getAPI((err, data) => {
                 if (err) {
                     callback(err, 'Error to get Data Table from Blockchain');
@@ -277,6 +284,8 @@ let update = (socket, cb) => {
 
         },
         two: function(callback){
+
+            console.log('get prices data ...');
 
             getPrices((err, data) => {
 
@@ -345,5 +354,6 @@ let run = (contract, action, data, cb) => {
 };
 
 module.exports = {
-    getPrices
+    update,
+    run
 }

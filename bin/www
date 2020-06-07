@@ -11,6 +11,7 @@ var moment = require('moment');
 var _ = require('lodash');
 const async = require('async');
 var priceCtrl = require('../controllers/prices');
+const whitelist = require('../whitelist');
 
 require('dotenv').config();
 
@@ -21,13 +22,6 @@ require('dotenv').config();
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-const io = require("socket.io")(server);
-
 // Check if blockchain data is updated ...
 let isTimetoUpdate = () => {  
   var format = 'hh:mm:ss'
@@ -37,12 +31,15 @@ let isTimetoUpdate = () => {
   return now.isAfter(time);  
 };
 
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+const io = require("socket.io")(server);
+
 io.origins((origin, callback) => {
-  console.log('Origin for Socket: ' + origin);
-  if (_.indexOf(whitelist.origins, origin) == -1) {
-    return callback('origin not allowed', false);
-  };
-  callback(null, true);
+  whitelist.socket(origin, callback);
 });
 
 io.on('connection', socket => {
@@ -54,12 +51,24 @@ let runUpdate_Markets = socket => {
 
   if (isTimetoUpdate() || process.env.TEST) {
 
-    priceCtrl.getPrices(socket, (err, response) => {
-      
+    priceCtrl.update(socket, (err, response) => {
+
+      async.eachSeries(response.blocks, (b, callback) => {
+        socket.emit('block', b);
+        callback();
+      }, err => {
+        console.info('Send data to Blockchain - Finished OK');
+      });
+
+      async.eachSeries(response.errors, (e, callback) => {
+        socket.emit('error', e);
+        callback();
+      }, err => {
+        console.warn('Send data to Blockchain - Finished Error');
+      });
+
       if (err) {
-          
-      } else {
-          
+        console.error('Error to update Blockchain COVID19');
       };
 
     })

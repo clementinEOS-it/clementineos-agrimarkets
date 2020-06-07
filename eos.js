@@ -15,8 +15,8 @@ var networks = [
     {
         account: 'iaqvrxpyvqgw',
         url: 'https://api.testnet.eos.io',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'iaqvrxpyvqgw',
                 code: 'iaqvrxpyvqgw', 
                 scope: 'iaqvrxpyvqgw'
@@ -26,8 +26,8 @@ var networks = [
     {
         account: 'sxrzkuxwuxju',
         url: 'https://api.testnet.eos.io',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'sxrzkuxwuxju',
                 code: 'sxrzkuxwuxju', 
                 scope: 'sxrzkuxwuxju'
@@ -37,8 +37,8 @@ var networks = [
     {
         account: 'clementine35',
         url: 'https://jungle2.cryptolions.io',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'clementine35',
                 code: 'clementine35', 
                 scope: 'clementine35'
@@ -48,8 +48,8 @@ var networks = [
     {
         account: 'follwhirab33',
         url: 'https://api-bostest.blockzone.net',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'follwhirab33',
                 code: 'follwhirab33', 
                 scope: 'follwhirab33'
@@ -59,8 +59,8 @@ var networks = [
     {
         account: 'gzilenieos33',
         url: 'https://testnet.eos.miami',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'gzilenieos33',
                 code: 'gzilenieos33', 
                 scope: 'gzilenieos33'
@@ -70,8 +70,8 @@ var networks = [
     {
         account: 'local',
         url: 'http://localhost:8888',
-        agrimarkets: {
-            coronavirus: {
+        smartContracts: {
+            agrimarkets: {
                 account: 'eosio',
                 code: 'eosio', 
                 scope: 'eosio'
