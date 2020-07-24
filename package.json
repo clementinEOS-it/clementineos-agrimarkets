@@ -27,12 +27,13 @@
     "html2json": "^1.0.2",
     "http-errors": "~1.6.3",
     "jquery": "^3.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.26.0",
     "morgan": "~1.9.1",
     "popper.js": "^1.16.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
+    "string": "^3.3.3",
     "vue": "^2.6.11",
     "vuejs": "^3.0.1"
   }

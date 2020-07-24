@@ -20,16 +20,16 @@ router.get('/', function(req, res, next) {
                  options, 
                  (error, response) => {
         
-        var r = _.sortBy(response, item => {
-            return item.date_at
-        });
-
         if (error) {
-            res.status(500).send('');
+            res.status(500).json({});
         } else {
-            res.status(200).json(r);
-        };
 
+            var r = _.sortBy(response, item => {
+                return item.date_at
+            });
+            
+            res.status(200).json(r);
+        }
     });
     
 });

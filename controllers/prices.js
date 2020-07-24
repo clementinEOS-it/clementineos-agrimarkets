@@ -1,6 +1,6 @@
 const axios         = require('axios');
 const markets       = require('../markets');
-const async         = require('async');
+const asyncronus    = require('async');
 const html2json     = require('html2json').html2json;
 const _             = require('lodash');
 const $             = require('cheerio');
@@ -8,6 +8,7 @@ const Entities      = require('html-entities').AllHtmlEntities;
 const crypto        = require('crypto');
 const moment        = require('moment');
 const eos           = require('eosblockchain');
+var S               = require('string');
 
 const entities = new Entities();
 
@@ -90,13 +91,15 @@ let getRowTable = (childs, m, cb) => {
 
                     _.forEach(c.child, item => {
 
-                        var s;
+                        var s = '';
 
-                        if (typeof item.text == 'undefined') {
-                            s = '';
-                        } else {
-                            s = String(item.text).replace('&#xFFFD;','°');
-                            s = String(s).replace('&apos;','\'');
+                        if (typeof item.text != 'undefined') {
+
+                            // s = String(item.text).replace('&#xFFFD;','°');
+                            // s = String(s).replace('&apos;','\'');
+
+                            s = S(item.text).replaceAll('&#xFFFD;','°');
+                            s = S(s).replace('&apos;','\'');
                         };
 
                         var v = decode(s);
@@ -107,16 +110,14 @@ let getRowTable = (childs, m, cb) => {
                         } else if (i == 1) {
                             _row.date_at = v;
                         } else if (i == 2) {
-                            _row.product = v;
+                            _row.product = S(v).replaceAll(' ', '');
                         } else if (i == 3) {
                             var n = v.match(/\d+/g).map(Number);
                             _row.price = v;
                             _row.price_num = parseFloat(String(n).replace(/,/, '.'));
                         } else if (i == 5) {
                             _row.condition = v;
-                        };
-
-                        // 
+                        }; 
                         
                     });
                 }
@@ -138,7 +139,7 @@ let getPrices = (cb) => {
     var _data = [];
     var _error = [];
 
-    async.each(markets, (m, callback) => {
+    asyncronus.each(markets, (m, callback) => {
 
         axios.get(m.url).then(response => {
 
@@ -203,7 +204,7 @@ let send = (socket, data, api_data, cb) => {
 
     var processed, error;
 
-    async.eachSeries(data, (d, callback) => {
+    asyncronus.eachSeries(data, (d, callback) => {
 
         if (isNew(api_data, d) || _.size(data) == 0) {
 
@@ -268,7 +269,7 @@ let update = (socket, cb) => {
     var result;
     var api_data;
 
-    async.series({
+    asyncronus.series({
         one: function(callback) {
 
             console.log('get API data ...');

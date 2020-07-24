@@ -58,6 +58,12 @@ var markets = [
         category: 'Carne bovina',
         url: 'http://www.ismeamercati.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/717',
         element: '.isAppTable'
+    },
+    {
+        type: 'Prezzi all\'origine',
+        category: 'Fiori e piante',
+        url: 'http://www.ismeamercati.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/988',
+        element: '.isAppTable'
     }
 ]
 
